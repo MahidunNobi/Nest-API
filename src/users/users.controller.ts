@@ -6,13 +6,14 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
-  @Get()
-  findAll() {
-    return 'all the users are here';
+  @Get() // /users  & /users&role=admin
+  findAll(@Query('role') role?: string) {
+    return `all the users are here with role ${role}`;
   }
 
   @Get(':id')
