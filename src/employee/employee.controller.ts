@@ -7,10 +7,13 @@ import {
   Param,
   Delete,
   Query,
+  Req,
+  Redirect,
 } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { Prisma } from '@prisma/client';
 import { SkipThrottle } from '@nestjs/throttler';
+import { Request } from 'express';
 
 @SkipThrottle()
 @Controller('employee')
@@ -24,12 +27,17 @@ export class EmployeeController {
 
   @SkipThrottle({ default: false })
   @Get()
-  findAll(@Query('role') role: 'INTERN' | 'ENGINEER' | 'ADMIN') {
+  // @Redirect('https://nestjs.com', 301)
+  findAll(
+    @Query('role') role: 'INTERN' | 'ENGINEER' | 'ADMIN',
+    @Req() request: Request,
+  ) {
+    // console.log(request.query);
     return this.employeeService.findAll(role);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string, @Query('role') role: string) {
     return this.employeeService.findOne(+id);
   }
 
