@@ -13,7 +13,10 @@ import { DatabaseModule } from './database/database.module';
 import { EmployeeModule } from './employee/employee.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
-import { ApiTokenCheckMiddleware } from './middleware/api-token-check-middleware';
+import {
+  ApiTokenCheckMiddleware,
+  ApiTokenCheckMiddlewareFn,
+} from './middleware/api-token-check-middleware';
 
 @Module({
   imports: [
@@ -41,7 +44,7 @@ import { ApiTokenCheckMiddleware } from './middleware/api-token-check-middleware
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(ApiTokenCheckMiddleware)
+      .apply(ApiTokenCheckMiddleware, ApiTokenCheckMiddlewareFn)
       .forRoutes({ path: 'employee', method: RequestMethod.GET });
   }
 }
