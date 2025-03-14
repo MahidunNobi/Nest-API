@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 
 export class ApiTokenCheckMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
-    console.log('Class middleware ran');
+    // console.log('Class middleware ran');
     // return res.status(403).json({
     //   message: "You've no token",
     // });
@@ -16,6 +16,6 @@ export function ApiTokenCheckMiddlewareFn(
   res: Response,
   next: NextFunction,
 ) {
-  console.log('Functional middleware ran');
+  // console.log('Functional middleware ran');
   next();
 }

@@ -8,7 +8,8 @@ import {
   Delete,
   Query,
   Req,
-  Redirect,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { Prisma } from '@prisma/client';
@@ -33,7 +34,15 @@ export class EmployeeController {
     @Req() request: Request,
   ) {
     // console.log(request.query);
-    return this.employeeService.findAll(role);
+    // throw new HttpException('Forbiden', HttpStatus.FORBIDDEN);
+    throw new HttpException(
+      {
+        status: HttpStatus.FORBIDDEN,
+        error: 'This is a custom message',
+      },
+      HttpStatus.FORBIDDEN,
+    );
+    // return this.employeeService.findAll(role);
   }
 
   @Get(':id')
