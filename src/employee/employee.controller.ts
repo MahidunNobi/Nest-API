@@ -10,12 +10,15 @@ import {
   Req,
   HttpException,
   HttpStatus,
+  BadRequestException,
+  UseFilters,
 } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { Prisma } from '@prisma/client';
 import { SkipThrottle } from '@nestjs/throttler';
 import { Request } from 'express';
 import { ForbiddenException } from 'src/exceptions/ForbidenException';
+import { HttpExceptionFilter } from 'src/exceptions/HttpExceptionFilters';
 
 @SkipThrottle()
 @Controller('employee')
@@ -29,13 +32,16 @@ export class EmployeeController {
 
   @SkipThrottle({ default: false })
   @Get()
+  @UseFilters(HttpExceptionFilter)
   // @Redirect('https://nestjs.com', 301)
   findAll(
     @Query('role') role: 'INTERN' | 'ENGINEER' | 'ADMIN',
     @Req() request: Request,
   ) {
     // console.log(request.query);
-    // throw new HttpException('Forbiden', HttpStatus.FORBIDDEN);
+
+    // throw new HttpException('Forbiden', HttpStatus.UNAUTHORIZED);
+
     // throw new HttpException(
     //   {
     //     status: HttpStatus.FORBIDDEN,
@@ -43,8 +49,15 @@ export class EmployeeController {
     //   },
     //   HttpStatus.FORBIDDEN,
     // );
+
     throw new ForbiddenException();
-    // return this.employeeService.findAll(role);
+
+    // throw new BadRequestException('Something bad happened', {
+    //   cause: new Error('DB Error'),
+    //   description: 'Some error description',
+    // });
+
+    return this.employeeService.findAll(role);
   }
 
   @Get(':id')
