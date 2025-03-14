@@ -15,6 +15,7 @@ import { EmployeeService } from './employee.service';
 import { Prisma } from '@prisma/client';
 import { SkipThrottle } from '@nestjs/throttler';
 import { Request } from 'express';
+import { ForbiddenException } from 'src/exceptions/ForbidenException';
 
 @SkipThrottle()
 @Controller('employee')
@@ -35,13 +36,14 @@ export class EmployeeController {
   ) {
     // console.log(request.query);
     // throw new HttpException('Forbiden', HttpStatus.FORBIDDEN);
-    throw new HttpException(
-      {
-        status: HttpStatus.FORBIDDEN,
-        error: 'This is a custom message',
-      },
-      HttpStatus.FORBIDDEN,
-    );
+    // throw new HttpException(
+    //   {
+    //     status: HttpStatus.FORBIDDEN,
+    //     error: 'This is a custom message',
+    //   },
+    //   HttpStatus.FORBIDDEN,
+    // );
+    throw new ForbiddenException();
     // return this.employeeService.findAll(role);
   }
 
